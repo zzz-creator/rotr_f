@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ride Simulators - Willby's Simulators</title>
+<base href="https://sims.willby.info/" />
+
+<link rel="stylesheet" href="css/css.css">
+
+<link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+<link rel="icon" type="image/png" href="images/icons/Autumn_250_nobg.png">
+<link rel="shortcut icon" type="image/x-icon" href="images/icons/favicon.ico">
+
+<link rel="apple-touch-icon" href="images/icons/Autumn_500.png">
+<link rel="apple-touch-icon" sizes="57x57" href="images/icons/Autumn_57.png">
+<link rel="apple-touch-icon" sizes="72x72" href="images/icons/Autumn_72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="images/icons/Autumn_76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="images/icons/Autumn_114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="images/icons/Autumn_120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="images/icons/Autumn_144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="images/icons/Autumn_152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/icons/Autumn_180.png"><meta name="description" content="I am Willby, one of the billions of humans on the planet earth! I spend my life creating things to share with humanity. I am obsessed with Disneyland, mainly the architecture and the logistics.">
+  <meta property="og:description" content="I am Willby, one of the billions of humans on the planet earth! I spend my life creating things to share with humanity. I am obsessed with Disneyland, mainly the architecture and the logistics.">
+<meta id="charset" charset="UTF-8">
+<meta name="title" content="Ride Simulators - Willby's Simulators">
+<meta property="og:title" content="Ride Simulators - Willby's Simulators">
+<meta name="keywords" content="Willby,Ride Simulators,Ride Simulations">
+<meta name="author" content="Willby">
+<meta property="og:image" content="images/icons/Autumn_180.png" />
+<meta property="image" content="images/icons/Autumn_180.png" />
+<meta name="application-name" content="images/icons/Autumn_180.png" />
+<meta name="msapplication-square70x70logo" content="images/icons/Autumn_72.png" />
+<meta name="msapplication-square150x150logo" content="images/icons/Autumn_152.png" />
+<meta name="msapplication-wide310x150logo" content="images/icons/Autumn_310_150.png" />
+<meta name="msapplication-TileColor" content="#86acff">
+<meta name="msapplication-TileImage" content="images/icons/Autumn_152.png">
+<meta name="msapplication-config" content="http://willby.info/config/browserconfig.xml">
+<meta name="theme-color" id="theme-color" content="#86acff">
+
+  <style>
+    /* User Message Bar */
+    .user_message {
+      width: 100%;
+      padding: 0.5% 0 0.5% 0;
+    }
+    .user_message .user_message_title {
+      display: inline-block;
+      vertical-align:top;
+      top: 1%;
+      font-weight: 900;
+      font-size: 200%;
+      width: 30%;
+      margin: 0;
+      height: 100%;
+      margin-left: 1%;
+      text-align: center;
+    }
+    .user_message .user_message_text {
+      display: inline-block;
+      width: 50%;
+      line-height: 110%;
+      margin-top: 0.5%;
+    }
+    .user_message .user_message_button {
+      display: inline-block;
+      vertical-align:middle;
+      text-align: center;
+      width: 15%;
+      top: 1%;
+      font-weight: 300;
+      font-size: 120%;
+      margin: 0;
+      height: 100%;
+      margin-left: 1%;
+    }
+    .user_message_blue { background: #002051; }
+    .user_message_red { background: #f96b6b; }
+    .user_message_orange { background: #d67a40; }
+    /* Simulator Grid */
+    #simulators {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      margin-left: 10%;
+      margin-right: 10%;
+      column-gap: 50px;
+      row-gap: 25px;
+      justify-content: center;
+      align-content: start;
+    }
+    #simulators .simulator {
+      display: grid;
+      width: 100%;
+      position: relative;
+    }
+    #simulators .simulator .simulatorImg {
+      width: 100%;
+      border-radius: 10px;
+      border: 3px solid white;
+    }
+    #simulators .simulator .title {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 2.5vw;
+      line-height: 100%;
+      text-shadow: -3px 0 #333, 0 3px #333, 3px 0 #333, 0 -3px #333;
+    }
+    #simulators .simulator .difficulty {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      font-size: 1vw;
+      padding: 5px;
+      border: 2px solid white;
+      border-radius: 5px;
+    }
+    #simulators .simulator .status {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 10px;
+      font-size: 1vw;
+      padding: 5px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: #121212aa;
+    }
+    #simulators .simulator .playtime {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      font-size: 1vw;
+      padding: 5px;
+      border: 2px solid #333;
+      border-radius: 5px;
+      background: rgba(17,17,17,0.5);
+    }
+    #simulators .simulator .difficulty-0 { background: #27ae61aa; } /* Easy */
+    #simulators .simulator .difficulty-1 { background: #f39c11aa; } /* Medium */
+    #simulators .simulator .difficulty-2 { background: #c1392baa; } /* Hard */
+    #simulators .simulator .difficulty-3 { background: #000000aa; } /* Very Hard */
+    @media screen and (max-width: 1500px) {
+      #simulators {
+        grid-template-columns: auto auto;
+        margin-left: 6%;
+        margin-right: 6%;
+        column-gap: 30px;
+      }
+      #simulators .simulator .title {
+        font-size: 4vw;
+      }
+    }
+    @media screen and (max-width: 1000px) {
+      #simulators {
+        grid-template-columns: auto;
+      }
+      #simulators .simulator .title {
+        font-size: 6vw;
+      }
+    }
+    /* Statistics */
+    #statistics {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      margin-left: 10%;
+      margin-right: 10%;
+      column-gap: 50px;
+      row-gap: 25px;
+      justify-content: center;
+      align-content: start;
+    }
+    #statistics .statBox {
+      width: 100%;
+      position: relative;
+      border: 3px solid white;
+      border-radius: 5px;
+      padding: 20px;
+    }
+    #statistics .statBox .title {
+      text-align: center;
+      font-size: 2.5vw;
+      line-height: 110%;
+      text-shadow: -3px 0 #333, 0 3px #333, 3px 0 #333, 0 -3px #333;
+      margin-bottom: 20px
+    }
+    #statistics .activePlayers .activePlayer {
+      line-height: 180%;
+    }
+    #statistics .mostPlayed table {
+      width: 100%
+    }
+    #statistics .mostPlayed table tr td {
+      padding-left: 10px;
+    }
+    #statistics .mostPlayed table tr td.placing {
+      font-weight: 900;
+    }
+    #statistics .sessions table {
+      width: 100%;
+    }
+    #statistics .sessions table tr td {
+      padding-left: 10px;
+    }
+    #statistics .statBox:not(title) {
+      font-size: 0.8vw;
+    }
+    @media screen and (max-width: 1500px) {
+      #statistics {
+        margin-left: 6%;
+        margin-right: 6%;
+        column-gap: 30px;
+      }
+      #statistics .statBox:not(title) {
+      font-size: 1vw;
+    }
+    }
+    @media screen and (max-width: 1000px) {
+      #statistics {
+        margin-left: 4%;
+        margin-right: 4%;
+        column-gap: 20px;
+      }
+    }
+    #patrons {
+      text-align: center;
+    }
+    #patrons .title {
+      font-size: 2.5vw;
+      line-height: 110%;
+      text-shadow: -3px 0 #FF424D, 0 3px #FF424D, 3px 0 #FF424D, 0 -3px #FF424D;
+      margin-bottom: 20px;
+    }
+    #patrons .become {
+      color: #FF424D;
+      font-size: 1.5vw;
+    }
+  </style>
+</head>
+<body>
+  <style>
+  @import url('https://fonts.googleapis.com/css?family=Fredoka+One|Kanit&display=swap');
+
+  .navbarback {
+    color: black;
+    font-size: 200%;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    background: white;
+    padding: 1%;
+  }
+  .nw {
+    color: black;
+  }
+  .accountbtn {
+    border: 3px solid black;
+    color: black;
+    padding: 0px 1% 0px 1%;
+  }
+  .patreon {
+    border: 3px solid #FF424D;
+    color: #FF424D;
+    padding: 0px 1% 0px 1%;
+  }
+  #patreonLogo {
+    width: 22px;
+    height: 22px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .navbarback a {
+    margin-left: 3%;
+    display: inline-block;
+    text-decoration: none;
+    -webkit-transition: opacity .25s ease-out;
+    transition: opacity .25s ease-out;
+  }
+  .navbarback a:link {
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .navbarback a:visited {
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .navbarback a:hover {
+    opacity: .4;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .navigationgrid {
+    display: grid;
+    grid-template-columns: 15% 15% 15% 40%;
+    grid-gap: 5%;
+  }
+  @media screen and (max-width: 1500px) {
+    .navbarback {
+      font-size: relative;
+      font-size: 180%;
+    }
+  }
+  @media screen and (max-width: 1300px) {
+    .navigationgrid {
+      display: grid;
+      grid-template-columns: 15% 15% 15% 50%;
+      grid-gap: 2%;
+    }
+    .navbarback {
+      font-size: 160%;
+    }
+  }
+  @media screen and (max-width: 1200px) {
+    .navbarback {
+      font-size: relative;
+    }
+  }
+</style>
+<nav class="navbarback">
+  <center>
+    <div class="navigationgrid">
+      <a class="nw" href="">SIMULATIONS</a>
+      <a class="nw" href="about">ABOUT</a>
+      <a class="nw" href="http://willby.info">MAIN SITE</a>
+      <div class="nw">
+      <a class="patreon" href="https://patreon.com/willby" target="blank"><img id="patreonLogo" src="images/assets/patreon.png">SUPPORT</a>
+      <a class="accountbtn" href="db/login">LOGIN</a>
+          <a class="accountbtn" href="db/register">REGISTER</a>      </div>
+    </div>
+  </center>
+</nav>
+<script>
+if ("".length>8) {
+  document.getElementById("username").style["font-size"] = -(0.13*("".length)**2)+100 + "%";
+}
+</script>  
+  <section class='user_message user_message_orange'><div class='user_message_title'>WELCOME!</div>
+    <div class='user_message_text'>Creating an account provides you with the option to log your sessions and showcase them on your profile. It's completely free! Playing simulations is available without needing an account.</div></section>  <br>
+    <section id="statistics">
+    <div class="statBox mostPlayed">
+      <div class="title">Total Playtime</div>
+      <table>
+        <tr>
+          <td></td>
+          <td><strong>Simulator</strong></td>
+          <td><strong>Time</strong></td>
+        </tr>
+        <tr><td class='placing'>1.</td><td>RISE OF THE RESISTANCE</td><td>18D, 4H, 19M</td></tr><tr><td class='placing'>2.</td><td>JOURNEY TO THE CENTER OF THE EARTH</td><td>12D, 22H, 17M</td></tr><tr><td class='placing'>3.</td><td>INDIANA JONES ADVENTURE</td><td>7D, 7H, 52M</td></tr><tr><td class='placing'>4.</td><td>ROGER RABBIT'S CAR TOON SPIN</td><td>5D, 1H, 4M</td></tr><tr><td class='placing'>5.</td><td>SMUGGLERS RUN</td><td>4D, 8H, 33M</td></tr><tr><td class='placing'>6.</td><td>POPCORN REVENGE</td><td>1D, 1H, 8M</td></tr>      </table>
+    </div>
+    <div class="statBox activePlayers" >
+      <div class="title">Active Players</div>
+      <table>
+        <tr>
+          <td><strong>Username</strong></td>
+          <td></td>
+          <td><strong>Simulator</strong></td>
+        </tr>
+        <tr><td><a href='https://sims.willby.info/user?u=Arkham2288'>Arkham2288</a></td><td>-</td><td>Rise of the Resistance</td></tr><tr><td><a href='https://sims.willby.info/user?u=canadianscotch'>canadianscotch</a></td><td>-</td><td>Indiana Jones Adventure</td></tr><tr><td><a href='https://sims.willby.info/user?u=JamesHa777'>JamesHa777</a></td><td>-</td><td>Indiana Jones Adventure</td></tr><tr><td><a href='https://sims.willby.info/user?u=romain'>romain</a></td><td>-</td><td>Rise of the Resistance</td></tr>      </table>
+      <br><br><br>
+      <div style="position:absolute;left:50%;transform:translate(-50%, -50%);text-align: center;bottom:8px;">
+      and 32 guests playing.      </div>
+    </div>
+    <div class="statBox sessions">
+      <div class="title">Latest Sessions</div>
+      <table>
+        <tr>
+          <td><strong>Username</strong></td>
+          <td><strong>Simulator</strong></td>
+          <td><strong>Time</strong></td>
+          <td><strong>Time Since</strong></td>
+        </tr>
+        <tr><td><a href='https://sims.willby.info/user?u=bryanF1001'>bryanF1001</a></td><td>Rise of the Resistance</td><td>25M</td><td>50S</td></tr><tr><td><a href='https://sims.willby.info/user?u=Vanhelsing'>Vanhelsing</a></td><td>Journey to the Center of the Earth</td><td>14M</td><td>2H, 7M</td></tr><tr><td><a href='https://sims.willby.info/user?u=Arkham2288'>Arkham2288</a></td><td>Rise of the Resistance</td><td>1H, 17M</td><td>3H, 53M</td></tr><tr><td><a href='https://sims.willby.info/user?u=Lebkuchenmann42'>Lebkuchenmann42</a></td><td>Roger Rabbit's Car Toon Spin</td><td>7M</td><td>5H, 1M</td></tr><tr><td><a href='https://sims.willby.info/user?u=Lebkuchenmann42'>Lebkuchenmann42</a></td><td>Smugglers Run</td><td>11M</td><td>5H, 9M</td></tr><tr><td><a href='https://sims.willby.info/user?u=BinkyRudich'>BinkyRudich</a></td><td>Journey to the Center of the Earth</td><td>43M</td><td>12H, 46M</td></tr><tr><td><a href='https://sims.willby.info/user?u=J3LLYL0GS'>J3LLYL0GS</a></td><td>Rise of the Resistance</td><td>1H, 6M</td><td>14H, 59M</td></tr>      </table>
+    </div>
+  </section>
+
+  <br><br>
+
+  <section id="simulators">
+    
+        <div class="simulator">
+          <a href="sim/smugglers_run" class="hover">
+            <img class="simulatorImg" src="images/simulators/smugglers_run.png">
+            <div class="title">SMUGGLERS RUN</div>
+            <div class="difficulty difficulty-3">Very Hard</div>
+            
+          </a>
+        </div>
+        <div class="simulator">
+          <a href="sim/journey_to_the_center_of_the_earth" class="hover">
+            <img class="simulatorImg" src="images/simulators/journey_to_the_center_of_the_earth.png">
+            <div class="title">JOURNEY TO THE CENTER OF THE EARTH</div>
+            <div class="difficulty difficulty-2">Hard</div>
+            
+          </a>
+        </div>
+        <div class="simulator">
+          <a href="sim/rise_of_the_resistance" class="hover">
+            <img class="simulatorImg" style="border-color: #59fff9;" src="images/simulators/rise_of_the_resistance.png">
+            <div class="title">RISE OF THE RESISTANCE</div>
+            <div class="status" style="color: #fff;">UPDATED</div>
+            <div class="difficulty difficulty-3">Very Hard</div>
+            
+          </a>
+        </div>
+        <div class="simulator">
+          <a href="sim/roger_rabbits_car_toon_spin" class="hover">
+            <img class="simulatorImg" src="images/simulators/roger_rabbits_car_toon_spin.png">
+            <div class="title">ROGER RABBIT'S CAR TOON SPIN</div>
+            <div class="difficulty difficulty-0">Easy</div>
+            
+          </a>
+        </div>
+        <div class="simulator">
+          <a href="sim/popcorn_revenge" class="hover">
+            <img class="simulatorImg" src="images/simulators/popcorn_revenge.png">
+            <div class="title">POPCORN REVENGE</div>
+            <div class="difficulty difficulty-0">Easy</div>
+            
+          </a>
+        </div>
+        <div class="simulator">
+          <a href="sim/indiana_jones_adventure" class="hover">
+            <img class="simulatorImg" src="images/simulators/indiana_jones_adventure.png">
+            <div class="title">INDIANA JONES ADVENTURE</div>
+            <div class="difficulty difficulty-1">Medium</div>
+            
+          </a>
+        </div>
+  </section>
+  <br>
+  <section id="patrons">
+        <div class="title">Patrons</div>
+    <hr>
+    <div class="patron_list">
+      <a class='patron' href='https://sims.willby.info/user?u=deathbatshadows84'>deathbatshadows84</a> <a class='patron' href='https://sims.willby.info/user?u=Dustin120'>Dustin120</a> <a class='patron' href='https://sims.willby.info/user?u=Ian'>Ian</a> <a class='patron' href='https://sims.willby.info/user?u=Stinger'>Stinger</a> <a class='patron' href='https://sims.willby.info/user?u=Sve'>Sve</a> <a class='patron' href='https://sims.willby.info/user?u=td00067'>td00067</a> <a class='patron' href='https://sims.willby.info/user?u=technodisney'>technodisney</a> <a class='patron' href='https://sims.willby.info/user?u=wobbie'>wobbie</a>     </div>
+    <hr><br>
+    <a class="become" href="https://patreon.com/willby" target="blank">Become a Patron</a><br>
+    <a class="help" href="https://sims.willby.info/about" target="blank">Name not showing up?</a>
+  </section>
+  <br>
+  <br><style>
+  @import url('https://fonts.googleapis.com/css?family=Fredoka+One|Kanit&display=swap');
+
+  .footbarback {
+    color: white;
+    font-size: 200%;
+    font-family: 'Kanit', sans-serif;
+    background: black;
+    border-top: 3px solid #86acff;
+    padding: 0.8%;
+  }
+  .fw {
+    color: white;
+      display: inline-block;
+  }
+  .footbarback a {
+    margin-left: 3%;
+    text-decoration: none;
+    -webkit-transition: opacity .25s ease-out;
+    transition: opacity .25s ease-out
+  }
+  .footbarback a:link {
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .footbarback a:visited {
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  .footbarback a:hover {
+    opacity: .4;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    text-decoration: none;
+    border-radius: 10px;
+  }
+  @media screen and (max-width: 1500px) {
+    .footbarback {
+      font-size: 300%;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    .footbarback {
+      font-size: 400%;
+    }
+  }
+</style>
+<footer class="footbarback">
+  <a class="fw" href="index.php">SIMULATIONS</a>
+  <a class="fw" href="about.php">ABOUT</a>
+  <a class="fw" href="http://willby.info" style="margin-left:30px;">MAIN SITE</a>
+  <div class="fw" style="font-size:50%; float:right; text-align: right;">Website Created By Willby<br>These simulations have been created as a tribute to the actual attractions. They are not endorsed by the original attraction owners.</div>
+</footer>
+  <script>
+    let lastSendAttempt = 0;
+    let timeTillResnd = 0;
+    let lastVerification = 0;
+
+    function updateResend() {
+      timeTillResnd = (120 - Math.floor((Date.now() - lastVerification*1000) / 1000));
+      if (timeTillResnd>0) {
+        document.getElementById("resendButton").innerText = "Resend (" + timeTillResnd + ")";
+        document.getElementById("resendButton").removeAttribute("href");
+      } else {
+        if (Date.now()-lastSendAttempt<100000) {
+          document.getElementById("resendButton").innerText = "Sending";
+        document.getElementById("resendButton").removeAttribute("href");
+        } else {
+          document.getElementById("resendButton").innerText = "Resend";
+          document.getElementById("resendButton").setAttribute("href", ""); 
+        }
+      }
+    }
+
+    if (document.getElementById("resendButton")) {
+      updateResend();
+      setInterval(updateResend, 1000);
+
+      document.getElementById("resendButton").addEventListener("click", function() {
+        lastSendAttempt = Date.now();
+
+        if (timeTillResnd>0) { return; }
+        fetch('https://sims.willby.info/db/resend_verify_email.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then(response => {});
+      });
+    }
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"cee4118446ea4b77855482aa77a6226a","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
